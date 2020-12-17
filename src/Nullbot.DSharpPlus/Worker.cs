@@ -1,8 +1,10 @@
 ﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,6 +15,7 @@ namespace Nullbot
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
         private DiscordClient _discordClient;
+        private CommandsNextModule _commands;
 
         public Worker(
             ILogger<Worker> logger,
@@ -25,6 +28,7 @@ namespace Nullbot
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             var discordToken = _config.GetValue("DiscordBot:DiscordToken", string.Empty);
+            var commandPrefix = _config.GetValue("DiscordBot:CommandPrefix", "nt!");
 
             if (string.IsNullOrEmpty(discordToken))
             {
@@ -41,13 +45,17 @@ namespace Nullbot
                     TokenType = TokenType.Bot,
                 });
 
+                // Setup commands
+                _commands = _discordClient.UseCommandsNext(new CommandsNextConfiguration()
+                {
+                    StringPrefix = commandPrefix,
+                });
+
+                _commands.RegisterCommands(Assembly.GetEntryAssembly());
+
                 // Listen for messages
                 _discordClient.MessageCreated += async (e) =>
                 {
-                    if (e.Message.Content.ToLower().StartsWith("ping"))
-                    {
-                        await e.Message.RespondAsync("pong!");
-                    }
                 };
 
                 // Connect to Discord
