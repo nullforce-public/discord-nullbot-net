@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +22,7 @@ namespace Nullbot
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            var discordToken = _config.GetValue<string>("NullbotDiscordToken", string.Empty);
+            var discordToken = _config.GetValue("DiscordBot:DiscordToken", string.Empty);
 
             if (string.IsNullOrEmpty(discordToken))
             {

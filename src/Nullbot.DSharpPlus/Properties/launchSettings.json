@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "nullbot": {
+    "Nullbot.DSharpPlus": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

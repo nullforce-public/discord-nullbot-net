@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DSharpPlus;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +12,7 @@ namespace Nullbot
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
+        private DiscordClient _discordClient;
 
         public Worker(
             ILogger<Worker> logger,
@@ -25,7 +24,7 @@ namespace Nullbot
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            var discordToken = _config.GetValue<string>("NullbotDiscordToken", string.Empty);
+            var discordToken = _config.GetValue("DiscordBot:DiscordToken", string.Empty);
 
             if (string.IsNullOrEmpty(discordToken))
             {
@@ -34,6 +33,25 @@ namespace Nullbot
             else
             {
                 _logger.LogInformation("Starting NullBot...");
+
+                // Initialize client
+                _discordClient = new DiscordClient(new DiscordConfiguration()
+                {
+                    Token = discordToken,
+                    TokenType = TokenType.Bot,
+                });
+
+                // Listen for messages
+                _discordClient.MessageCreated += async (e) =>
+                {
+                    if (e.Message.Content.ToLower().StartsWith("ping"))
+                    {
+                        await e.Message.RespondAsync("pong!");
+                    }
+                };
+
+                // Connect to Discord
+                await _discordClient.ConnectAsync();
             }
 
             await base.StartAsync(cancellationToken);

@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "nullbot": {
+    "Nullbot.DiscordNet": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
