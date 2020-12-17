@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "nullbot": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
