@@ -15,7 +15,7 @@ namespace Nullbot
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
         private DiscordClient _discordClient;
-        private CommandsNextModule _commands;
+        private CommandsNextExtension _commands;
 
         public Worker(
             ILogger<Worker> logger,
@@ -48,13 +48,13 @@ namespace Nullbot
                 // Setup commands
                 _commands = _discordClient.UseCommandsNext(new CommandsNextConfiguration()
                 {
-                    StringPrefix = commandPrefix,
+                    StringPrefixes = new[] { commandPrefix },
                 });
 
                 _commands.RegisterCommands(Assembly.GetEntryAssembly());
 
                 // Listen for messages
-                _discordClient.MessageCreated += async (e) =>
+                _discordClient.MessageCreated += async (sender, e) =>
                 {
                 };
 
