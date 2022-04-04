@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Nullbot</RootNamespace>
     <UserSecretsId>nullbot-discordnet-EAC322B8-0EF2-4BFF-B82C-0E37C748B69B</UserSecretsId>
   </PropertyGroup>

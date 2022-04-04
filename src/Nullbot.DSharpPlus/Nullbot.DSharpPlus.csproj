@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Nullbot</RootNamespace>
     <UserSecretsId>nullbot-dsharpplus-E107E74A-9C33-468D-9247-4B07727F435A</UserSecretsId>
   </PropertyGroup>
