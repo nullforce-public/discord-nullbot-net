@@ -45,6 +45,7 @@ namespace Nullbot
                 // Initialize client
                 _discordClient = new DiscordSocketClient(new DiscordSocketConfig()
                 {
+                    GatewayIntents = GatewayIntents.AllUnprivileged,
                     LogLevel = LogSeverity.Verbose,
                     MessageCacheSize = 1_000,
                 });
