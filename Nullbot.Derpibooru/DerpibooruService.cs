@@ -32,15 +32,15 @@ public static class DerpibooruService
 
         if (nsfw)
         {
-            searchUri = searchUri.SetQueryParam("q", $"!safe && !suggestive && {term}");
+            searchUri = searchUri.SetQueryParam("q", $"!safe && !suggestive && first_seen_at.gt:10 days ago && score.gt:50 && {term}");
         }
         else if (suggestive)
         {
-            searchUri = searchUri.SetQueryParam("q", $"suggestive && {term}");
+            searchUri = searchUri.SetQueryParam("q", $"suggestive && first_seen_at.gt:10 days ago && score.gt:50 && {term}");
         }
         else
         {
-            searchUri = searchUri.SetQueryParam("q", $"safe && {term}");
+            searchUri = searchUri.SetQueryParam("q", $"safe && first_seen_at.gt:10 days ago && score.gt:50 && {term}");
         }
 
         var json = await searchUri.GetStringAsync();
