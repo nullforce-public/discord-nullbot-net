@@ -23,7 +23,30 @@ namespace Nullbot.Commands
         }
 
         [Command("derpi")]
-        public async Task DerpiAsync(string id, params string[] args)
+        public async Task DerpiAsync(int imageId)
+        {
+            var isNsfwChannel = ((ITextChannel)Context.Channel).IsNsfw;
+            var imageInfo = await DerpibooruService.GetImageInfoAsync(imageId);
+
+            if (imageInfo != null)
+            {
+                if (IsNsfwImage(imageInfo) && !isNsfwChannel)
+                {
+                    await ReplyAsync("I can't do that in a non-NSFW channel.");
+                }
+                else
+                {
+                    await ReplyAsync(GetImageString(imageId));
+                }
+            }
+            else
+            {
+                await ReplyAsync($"Unable to fetch image with that id ({imageId}).");
+            }
+        }
+
+        [Command("derpi")]
+        public async Task DerpiAsync(string term, params string[] args)
         {
             var suggestive = args.Contains("--suggestive");
             var nsfw = args.Contains("--nsfw");
@@ -36,11 +59,16 @@ namespace Nullbot.Commands
             }
 
             var imageId = await DerpibooruService.GetRandomImageAsync(
-                id,
+                term,
                 args.Contains("--suggestive"),
                 args.Contains("--nsfw"));
-            await ReplyAsync($"https://derpibooru.org/images/{imageId}");
+            await ReplyAsync(GetImageString(imageId));
         }
+
+        private static string GetImageString(int imageId) => $"https://derpibooru.org/images/{imageId}";
+        private static bool IsSafeImage(Nullforce.Api.Derpibooru.JsonModels.ImageJson imageInfo) => imageInfo.Tags.Contains("safe");
+        private static bool IsSuggestiveImage(Nullforce.Api.Derpibooru.JsonModels.ImageJson imageInfo) => imageInfo.Tags.Contains("suggestive");
+        private static bool IsNsfwImage(Nullforce.Api.Derpibooru.JsonModels.ImageJson imageInfo) => !(IsSafeImage(imageInfo) || IsSuggestiveImage(imageInfo));
     }
 
     [NamedArgumentType]

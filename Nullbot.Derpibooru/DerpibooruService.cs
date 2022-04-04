@@ -21,6 +21,15 @@ public static class DerpibooruService
             }));
     }
 
+    public static async Task<ImageJson> GetImageInfoAsync(int id)
+    {
+        string imageUri = BaseUri
+            .AppendPathSegment($"/images/{id}");
+
+        var imageInfo = await imageUri.GetJsonAsync<ImageRootJson>();
+        return imageInfo?.Image;
+    }
+
     public static async Task<int> GetRandomImageAsync(string term, bool suggestive = false, bool nsfw = false)
     {
         string searchUri = BaseUri
