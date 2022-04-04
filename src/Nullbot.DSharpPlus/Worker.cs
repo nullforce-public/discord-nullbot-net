@@ -41,6 +41,7 @@ namespace Nullbot
                 // Initialize client
                 _discordClient = new DiscordClient(new DiscordConfiguration()
                 {
+                    Intents = DiscordIntents.AllUnprivileged,
                     Token = discordToken,
                     TokenType = TokenType.Bot,
                 });
@@ -54,9 +55,10 @@ namespace Nullbot
                 _commands.RegisterCommands(Assembly.GetEntryAssembly());
 
                 // Listen for messages
-                _discordClient.MessageCreated += async (sender, e) =>
-                {
-                };
+                //_discordClient.MessageCreated += async (sender, e) =>
+                //{
+                //    _logger.LogTrace("Message Received: {message}", e.Message.Content);
+                //};
 
                 // Connect to Discord
                 await _discordClient.ConnectAsync();
