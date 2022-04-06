@@ -15,6 +15,7 @@ namespace Nullbot
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    services.AddSingleton<Derpibooru.DerpibooruService>();
                 });
     }
 }

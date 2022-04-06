@@ -10,10 +10,14 @@ namespace Nullbot.Commands
     public class PonyCommands : BaseCommandModule
     {
         private readonly ILogger _logger;
+        private readonly DerpibooruService _derpibooru;
 
-        public PonyCommands(ILogger<PonyCommands> logger)
+        public PonyCommands(
+            ILogger<PonyCommands> logger,
+            DerpibooruService derpibooru)
         {
             _logger = logger;
+            _derpibooru = derpibooru;
         }
 
         [Command("derpi")]
@@ -22,7 +26,7 @@ namespace Nullbot.Commands
         {
             _logger.LogTrace("PonyCommands: derpi called");
 
-            var imageId = await DerpibooruService.GetRandomImageIdAsync(
+            var imageId = await _derpibooru.GetRandomImageIdAsync(
                 "*",
                 context.Channel.IsNSFW,
                 context.Channel.IsNSFW);
@@ -33,7 +37,7 @@ namespace Nullbot.Commands
         public async Task DerpiAsync(CommandContext context, int imageId)
         {
             var isNsfwChannel = context.Channel.IsNSFW;
-            var imageInfo = await DerpibooruService.GetImageInfoAsync(imageId);
+            var imageInfo = await _derpibooru.GetImageInfoAsync(imageId);
 
             if (imageInfo != null)
             {
@@ -65,7 +69,7 @@ namespace Nullbot.Commands
                 return;
             }
 
-            var imageId = await DerpibooruService.GetRandomImageIdAsync(
+            var imageId = await _derpibooru.GetRandomImageIdAsync(
                 term,
                 suggestive,
                 nsfw);

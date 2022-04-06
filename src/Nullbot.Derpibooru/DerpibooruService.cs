@@ -5,13 +5,13 @@ using System.Text.Json;
 
 namespace Nullbot.Derpibooru;
 
-public static class DerpibooruService
+public class DerpibooruService
 {
     private const string BaseUri = "https://derpibooru.org/api/v1/json";
     private const int EverythingFilter = 56027;
     private const int DefaultFilter = 100073;
 
-    static DerpibooruService()
+    public DerpibooruService()
     {
         FlurlHttp.ConfigureClient(BaseUri, cli => cli
             .WithHeaders(new
@@ -21,7 +21,7 @@ public static class DerpibooruService
             }));
     }
 
-    public static async Task<ImageJson?> GetImageInfoAsync(int id)
+    public async Task<ImageJson?> GetImageInfoAsync(int id)
     {
         string imageUri = BaseUri
             .AppendPathSegment($"/images/{id}");
@@ -30,7 +30,7 @@ public static class DerpibooruService
         return imageInfo?.Image;
     }
 
-    public static async Task<int> GetRandomImageIdAsync(string term, bool suggestive = false, bool nsfw = false)
+    public async Task<int> GetRandomImageIdAsync(string term, bool suggestive = false, bool nsfw = false)
     {
         string searchUri = BaseUri
             .AppendPathSegment("/search/images")
