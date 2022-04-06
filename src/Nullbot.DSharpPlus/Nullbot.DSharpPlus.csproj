@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Nullbot.Derpibooru\Nullbot.Derpibooru.csproj" />
+    <ProjectReference Include="..\Nullbot.Derpibooru\Nullbot.Derpibooru.csproj" />
   </ItemGroup>
 
 </Project>
