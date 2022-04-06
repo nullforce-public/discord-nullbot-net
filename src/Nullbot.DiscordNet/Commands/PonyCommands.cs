@@ -15,7 +15,7 @@ namespace Nullbot.Commands
         public async Task DerpiAsync()
         {
             var isNsfwChannel = ((ITextChannel)Context.Channel).IsNsfw;
-            var imageId = await DerpibooruService.GetRandomImageAsync(
+            var imageId = await DerpibooruService.GetRandomImageIdAsync(
                 "*",
                 isNsfwChannel,
                 isNsfwChannel);
@@ -58,7 +58,7 @@ namespace Nullbot.Commands
                 return;
             }
 
-            var imageId = await DerpibooruService.GetRandomImageAsync(
+            var imageId = await DerpibooruService.GetRandomImageIdAsync(
                 term,
                 args.Contains("--suggestive"),
                 args.Contains("--nsfw"));

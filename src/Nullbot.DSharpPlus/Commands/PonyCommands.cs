@@ -12,7 +12,7 @@ namespace Nullbot.Commands
         [Description("Perform image searches/retrieval on derpibooru.")]
         public async Task DerpiAsync(CommandContext context)
         {
-            var imageId = await DerpibooruService.GetRandomImageAsync(
+            var imageId = await DerpibooruService.GetRandomImageIdAsync(
                 "*",
                 context.Channel.IsNSFW,
                 context.Channel.IsNSFW);
@@ -55,7 +55,7 @@ namespace Nullbot.Commands
                 return;
             }
 
-            var imageId = await DerpibooruService.GetRandomImageAsync(
+            var imageId = await DerpibooruService.GetRandomImageIdAsync(
                 term,
                 suggestive,
                 nsfw);

@@ -21,7 +21,7 @@ public static class DerpibooruService
             }));
     }
 
-    public static async Task<ImageJson> GetImageInfoAsync(int id)
+    public static async Task<ImageJson?> GetImageInfoAsync(int id)
     {
         string imageUri = BaseUri
             .AppendPathSegment($"/images/{id}");
@@ -30,7 +30,7 @@ public static class DerpibooruService
         return imageInfo?.Image;
     }
 
-    public static async Task<int> GetRandomImageAsync(string term, bool suggestive = false, bool nsfw = false)
+    public static async Task<int> GetRandomImageIdAsync(string term, bool suggestive = false, bool nsfw = false)
     {
         string searchUri = BaseUri
             .AppendPathSegment("/search/images")
@@ -54,8 +54,7 @@ public static class DerpibooruService
 
         var json = await searchUri.GetStringAsync();
         var searchResults = JsonSerializer.Deserialize<ImageSearchRootJson>(json);
-        var images = searchResults.Images.ToList();
 
-        return images.First().Id;
+        return searchResults?.Images.FirstOrDefault()?.Id ?? -1;
     }
 }
