@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Logging;
 using Nullbot.Derpibooru;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,12 +9,18 @@ namespace Nullbot.Commands
 {
     public class PonyCommands : ModuleBase<SocketCommandContext>
     {
-        private const int EverythingFilter = 56027;
-        private const int DefaultFilter = 100073;
+        private readonly ILogger _logger;
+
+        public PonyCommands(ILogger<PonyCommands> logger)
+        {
+            _logger = logger;
+        }
 
         [Command("derpi")]
         public async Task DerpiAsync()
         {
+            _logger.LogTrace("PonyCommands: derpi called");
+
             var isNsfwChannel = ((ITextChannel)Context.Channel).IsNsfw;
             var imageId = await DerpibooruService.GetRandomImageIdAsync(
                 "*",

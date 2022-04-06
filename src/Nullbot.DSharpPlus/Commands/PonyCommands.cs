@@ -1,5 +1,6 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
+using Microsoft.Extensions.Logging;
 using Nullbot.Derpibooru;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +9,19 @@ namespace Nullbot.Commands
 {
     public class PonyCommands : BaseCommandModule
     {
+        private readonly ILogger _logger;
+
+        public PonyCommands(ILogger<PonyCommands> logger)
+        {
+            _logger = logger;
+        }
+
         [Command("derpi")]
         [Description("Perform image searches/retrieval on derpibooru.")]
         public async Task DerpiAsync(CommandContext context)
         {
+            _logger.LogTrace("PonyCommands: derpi called");
+
             var imageId = await DerpibooruService.GetRandomImageIdAsync(
                 "*",
                 context.Channel.IsNSFW,

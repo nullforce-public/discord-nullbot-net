@@ -14,15 +14,18 @@ namespace Nullbot
     {
         private readonly ILogger<Worker> _logger;
         private readonly IConfiguration _config;
+        private readonly IServiceProvider _provider;
         private DiscordClient _discordClient;
         private CommandsNextExtension _commands;
 
         public Worker(
             ILogger<Worker> logger,
-            IConfiguration config)
+            IConfiguration config,
+            IServiceProvider provider)
         {
             _logger = logger;
             _config = config;
+            _provider = provider;
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
@@ -49,6 +52,7 @@ namespace Nullbot
                 // Setup commands
                 _commands = _discordClient.UseCommandsNext(new CommandsNextConfiguration()
                 {
+                    Services = _provider,
                     StringPrefixes = new[] { commandPrefix },
                 });
 
