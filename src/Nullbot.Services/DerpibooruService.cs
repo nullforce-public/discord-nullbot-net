@@ -1,6 +1,6 @@
-﻿   using Flurl;
+﻿using Flurl;
 using Flurl.Http;
-using Nullforce.Api.Derpibooru.JsonModels;
+using Nullforce.Api.JsonModels.Philomena;
 using System.Text.Json;
 
 namespace Nullbot.Derpibooru;

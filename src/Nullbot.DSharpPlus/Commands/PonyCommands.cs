@@ -77,8 +77,8 @@ namespace Nullbot.Commands
         }
 
         private static string GetImageString(int imageId) => $"https://derpibooru.org/images/{imageId}";
-        private static bool IsSafeImage(Nullforce.Api.Derpibooru.JsonModels.ImageJson imageInfo) => imageInfo.Tags.Contains("safe");
-        private static bool IsSuggestiveImage(Nullforce.Api.Derpibooru.JsonModels.ImageJson imageInfo) => imageInfo.Tags.Contains("suggestive");
-        private static bool IsNsfwImage(Nullforce.Api.Derpibooru.JsonModels.ImageJson imageInfo) => !(IsSafeImage(imageInfo) || IsSuggestiveImage(imageInfo));
+        private static bool IsSafeImage(Nullforce.Api.JsonModels.Philomena.ImageJson imageInfo) => imageInfo.Tags.Contains("safe");
+        private static bool IsSuggestiveImage(Nullforce.Api.JsonModels.Philomena.ImageJson imageInfo) => imageInfo.Tags.Contains("suggestive");
+        private static bool IsNsfwImage(Nullforce.Api.JsonModels.Philomena.ImageJson imageInfo) => !(IsSafeImage(imageInfo) || IsSuggestiveImage(imageInfo));
     }
 }
