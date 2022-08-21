@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ namespace Nullbot
         private readonly IServiceProvider _provider;
         private CommandService _commands;
         private DiscordSocketClient _discordClient;
+        private InteractionService _interactionService;
 
         public Worker(
             ILogger<Worker> logger,
@@ -33,6 +35,7 @@ namespace Nullbot
         {
             var discordToken = _config.GetValue("DiscordBot:DiscordToken", string.Empty);
             var commandPrefix = _config.GetValue("DiscordBot:CommandPrefix", "nt!");
+            ulong.TryParse(_config.GetValue("DiscordBot:TestGuildId", ""), out var testGuildId);
 
             if (string.IsNullOrEmpty(discordToken))
             {
@@ -50,14 +53,17 @@ namespace Nullbot
                     MessageCacheSize = 1_000,
                 });
 
+                _interactionService = new InteractionService(_discordClient.Rest);
+
                 // Setup commands
                 _commands = new CommandService(new CommandServiceConfig()
                 {
                     LogLevel = LogSeverity.Verbose,
-                    DefaultRunMode = RunMode.Async,
+                    DefaultRunMode = Discord.Commands.RunMode.Async,
                 });
 
                 await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+                await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
 
                 // Listen for messages
                 _discordClient.MessageReceived += async (e) =>
@@ -82,6 +88,26 @@ namespace Nullbot
                         {
                             await context.Channel.SendMessageAsync(result.ErrorReason);
                         }
+                    }
+                };
+
+                _discordClient.Ready += async () =>
+                {
+                    // Register Context & Slash commands
+                    await _interactionService.RegisterCommandsToGuildAsync(testGuildId, true);
+                };
+
+                _discordClient.InteractionCreated += async (interaction) =>
+                {
+                    try
+                    {
+                        var context = new SocketInteractionContext(_discordClient, interaction);
+
+                        // Execute the incoming command
+                        var result = await _interactionService.ExecuteCommandAsync(context, _provider);
+                    }
+                    catch
+                    {
                     }
                 };
 

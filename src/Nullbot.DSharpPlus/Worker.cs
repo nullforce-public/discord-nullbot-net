@@ -1,5 +1,6 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.SlashCommands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -32,6 +33,7 @@ namespace Nullbot
         {
             var discordToken = _config.GetValue("DiscordBot:DiscordToken", string.Empty);
             var commandPrefix = _config.GetValue("DiscordBot:CommandPrefix", "nt!");
+            ulong.TryParse(_config.GetValue("DiscordBot:TestGuildId", ""), out var testGuildId);
 
             if (string.IsNullOrEmpty(discordToken))
             {
@@ -50,13 +52,21 @@ namespace Nullbot
                 });
 
                 // Setup commands
-                _commands = _discordClient.UseCommandsNext(new CommandsNextConfiguration()
+                _commands = _discordClient.UseCommandsNext(new CommandsNextConfiguration
                 {
                     Services = _provider,
                     StringPrefixes = new[] { commandPrefix },
                 });
 
                 _commands.RegisterCommands(Assembly.GetEntryAssembly());
+
+                // Setup slash commands
+                var slashCommands = _discordClient.UseSlashCommands(new SlashCommandsConfiguration
+                {
+                    Services = _provider,
+                });
+
+                slashCommands.RegisterCommands(Assembly.GetEntryAssembly(), testGuildId);
 
                 // Listen for messages
                 //_discordClient.MessageCreated += async (sender, e) =>

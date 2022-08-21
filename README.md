@@ -11,9 +11,16 @@ This repo contains two implementations, one with Discord.Net and the other with 
 Website: https://discordnet.dev/
 GitHub: https://github.com/discord-net/Discord.Net
 
+Supports:
+- Commands
+- Slash Commands via InteractionService
+- Context Commands via InteractionService
+
 ### DSharpPlus
 
 Website: https://dsharpplus.github.io/
 GitHub: https://github.com/DSharpPlus/DSharpPlus
 
-Additionally, `DSharpPlus.CommandsNext` is used.
+Supports:
+- Commands via `DSharpPlus.CommandsNext`
+- Slash Commands via `DSharpPlus.SlashCommands`
