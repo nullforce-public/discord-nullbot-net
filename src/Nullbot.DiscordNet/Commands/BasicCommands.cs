@@ -15,5 +15,6 @@ public class BasicCommands : ModuleBase<SocketCommandContext>
     }
 
     [Command("ping")]
-    public Task PingAsync() => ReplyAsync("pong!");
+    [Summary("Responds with a pong message.")]
+    public async Task PingAsync() => await ReplyAsync("pong!");
 }

@@ -53,9 +53,7 @@ public class Worker : BackgroundService
                 MessageCacheSize = 1_000,
             });
 
-            _interactionService = new InteractionService(_discordClient.Rest);
-
-            // Setup commands
+            // Setup text commands
             _commands = new CommandService(new CommandServiceConfig()
             {
                 LogLevel = LogSeverity.Verbose,
@@ -63,6 +61,9 @@ public class Worker : BackgroundService
             });
 
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+
+            // Setup slash commands
+            _interactionService = new InteractionService(_discordClient.Rest);
             await _interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
 
             // Listen for messages
@@ -93,7 +94,7 @@ public class Worker : BackgroundService
 
             _discordClient.Ready += async () =>
             {
-                // Register Context & Slash commands
+                // Register Context & Slash commands with a guild
                 await _interactionService.RegisterCommandsToGuildAsync(testGuildId, true);
             };
 

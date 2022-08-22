@@ -24,3 +24,6 @@ GitHub: https://github.com/DSharpPlus/DSharpPlus
 Supports:
 - Commands via `DSharpPlus.CommandsNext`
 - Slash Commands via `DSharpPlus.SlashCommands`
+
+Features:
+- Creates a default `help` command

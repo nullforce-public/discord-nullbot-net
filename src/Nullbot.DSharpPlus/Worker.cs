@@ -51,7 +51,7 @@ public class Worker : BackgroundService
                 TokenType = TokenType.Bot,
             });
 
-            // Setup commands
+            // Setup text commands
             _commands = _discordClient.UseCommandsNext(new CommandsNextConfiguration
             {
                 Services = _provider,
@@ -67,12 +67,6 @@ public class Worker : BackgroundService
             });
 
             slashCommands.RegisterCommands(Assembly.GetEntryAssembly(), testGuildId);
-
-            // Listen for messages
-            //_discordClient.MessageCreated += async (sender, e) =>
-            //{
-            //    _logger.LogTrace("Message Received: {message}", e.Message.Content);
-            //};
 
             // Connect to Discord
             await _discordClient.ConnectAsync();
